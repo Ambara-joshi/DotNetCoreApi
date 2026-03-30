@@ -17,8 +17,10 @@ RUN dotnet restore "DotNetCoreApi.csproj"
 #COPY ["DotNetCoreApi/DotNetCoreApi.csproj", "DotNetCoreApi/"]
 #RUN dotnet restore "./DotNetCoreApi/DotNetCoreApi.csproj"
 COPY . .
-WORKDIR "/src/DotNetCoreApi"
-RUN dotnet build "./DotNetCoreApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+#WORKDIR "/src/DotNetCoreApi"
+WORKDIR "/src"
+#RUN dotnet build "./DotNetCoreApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "DotNetCoreApi.csproj" -c Release -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
