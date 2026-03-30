@@ -23,7 +23,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'DotNetCoreApi'
-    repository: 'dotnetcoreapi'
+    repository: 'ambarajv/dotnetcoreapi'
     command: 'buildAndPush'
     Dockerfile: '$(Build.SourcesDirectory)/DotNetCoreApi/Dockerfile'
     buildContext: '$(Build.SourcesDirectory)/DotNetCoreApi'
