@@ -20,5 +20,5 @@ steps:
     containerRegistry: 'DotNetCoreApi'
     repository: 'dotnetcoreapi'
     command: 'buildAndPush'
-    buildContext: '.'
-    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)/DotNetCoreApi'
+    Dockerfile: '$(Build.SourcesDirectory)/DotNetCoreApi/Dockerfile'
