@@ -20,6 +20,13 @@ steps:
     echo "Listing files..."
     ls -R
   displayName: 'Show folder structure'
+- task: SonarQubePrepare@8
+  inputs:
+    SonarQube: 'SonarDocker'
+    scannerMode: 'dotnet'
+    dotnetScannerVersion: '8.0'
+    projectKey: 'DotNetCoreApi_DotNetCoreApi_4643e225-bdfa-4cb8-9a70-137d5f5d4519'
+    projectName: 'DotNetCoreApi'
 - task: Docker@2
   inputs:
     containerRegistry: 'DotNetCoreApi'
