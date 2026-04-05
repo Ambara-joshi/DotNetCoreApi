@@ -13,8 +13,28 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- checkout: self
+  fetchDepth: 0
+  
+- task: SonarCloudPrepare@4
+  inputs:
+    SonarQube: 'SonarCloud'
+    organization: 'devops-ambara'
+    scannerMode: 'dotnet'
+    projectKey: 'devops-Ambara_DotNetCoreApi'
+    projectName: 'DotNetCoreApi'
+
+- task: SonarCloudAnalyze@4
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: SonarCloudPublish@4
+  inputs:
+    pollingTimeoutSec: '300'
 
 - script: |
     echo "Listing files..."
