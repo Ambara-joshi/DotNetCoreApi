@@ -13,17 +13,45 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
+- checkout: self
+  fetchDepth: 0
+  
+- task: SonarCloudPrepare@4
+  inputs:
+    SonarQube: 'SonarCloud'
+    organization: 'devops-ambara'
+    scannerMode: 'dotnet'
+    projectKey: 'devops-Ambara_DotNetCoreApi'
+    projectName: 'DotNetCoreApi'
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: SonarCloudAnalyze@4
+  inputs:
+     jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@4
+  inputs:
+     pollingTimeoutSec: '300'
 
 - script: |
     echo "Listing files..."
     ls -R
   displayName: 'Show folder structure'
+
+# - task: SonarQubePrepare@8
+#   inputs:
+#     SonarQube: 'SonarDocker'
+#     scannerMode: 'dotnet'
+#     dotnetScannerVersion: '11.2.0.135473'
+#     projectKey: 'DotNetCoreApi_DotNetCoreApi_4643e225-bdfa-4cb8-9a70-137d5f5d4519'
+#     projectName: 'DotNetCoreApi'
 - task: Docker@2
   inputs:
     containerRegistry: 'DotNetCoreApi'
-    repository: 'dotnetcoreapi'
+    repository: 'ambarajv/dotnetcoreapi'
     command: 'buildAndPush'
     Dockerfile: '$(Build.SourcesDirectory)/DotNetCoreApi/Dockerfile'
     buildContext: '$(Build.SourcesDirectory)/DotNetCoreApi'
