@@ -61,6 +61,28 @@ steps:
 #     dotnetScannerVersion: '11.2.0.135473'
 #     projectKey: 'DotNetCoreApi_DotNetCoreApi_4643e225-bdfa-4cb8-9a70-137d5f5d4519'
 #     projectName: 'DotNetCoreApi'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+ 
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'myWebAPI'
+ 
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: drop1
+
 - task: Docker@2
   inputs:
     containerRegistry: 'DotNetCoreApi'
