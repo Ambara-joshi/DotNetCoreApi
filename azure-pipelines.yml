@@ -90,3 +90,17 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '$(Build.SourcesDirectory)/DotNetCoreApi/Dockerfile'
     buildContext: '$(Build.SourcesDirectory)/DotNetCoreApi'
+
+- task: IISWebAppManagementOnMachineGroup@0
+  inputs:
+    EnableIIS: true
+    IISDeploymentType: 'IISWebsite'
+    ActionIISWebsite: 'CreateOrUpdateWebsite'
+    WebsiteName: 'MyDotNetAPI'
+    WebsitePhysicalPath: '%SystemDrive%\inetpub\wwwroot'
+    WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
+
+- task: IISWebAppDeploymentOnMachineGroup@0
+  inputs:
+    WebSiteName: 'My DotNetAPI'
+    Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
